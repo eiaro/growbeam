@@ -30,16 +30,17 @@ All strings are powered by a shared 24 V DC source and operate at approx. 60�
 
 ## 📂 Repository Structure
 ```
-growbeam/ 
-├── hardware/ # Schematics, PCB layout, and BOM 
-│ ├── schematics/ 
-│ ├── pcb/ 
-│ └── bom.csv 
-├── docs/ # Documentation and test results 
-├── images/ # Photos and renders for documentation 
-├── LICENSE # CERN-OHL-S v2 license 
-├── README.md # This file 
-└── .gitignore # Ignore backups and build artifacts
+growbeam/
+├── hardware/
+│   ├── kicad_project/           # Contains .kicad_pro, .kicad_sch, .kicad_pcb files, etc.
+│   ├── exports/                 # Gerber files, BOM, pick & place, and fabrication outputs
+│   └── bom.csv                  # Human-readable bill of materials (optional auto-generated)
+├── docs/                        # Additional documentation, test results, diagrams
+├── images/                      # Renders, module photos, screenshots
+├── LICENSE                      # CERN-OHL v2-S license file
+├── README.md                    # Project description and usage guide
+├── .gitignore                   # Ignore KiCad backups and build artifacts
+└── CONTRIBUTING.md              # (Optional) Contribution guidelines
 ```
 
 ---
