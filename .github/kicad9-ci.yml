@@ -1,0 +1,29 @@
+name: KiCad 9 Auto Export
+
+on:
+  push:
+    paths:
+      - 'hardware/kicad_project/**'
+  workflow_dispatch:
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    name: Generate BoM, PDFs, Gerbers, and 3D render using KiCad 9
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Docker
+        run: |
+          docker build -t kicad9-ci ./docker
+
+      - name: Run KiCad CLI in Docker
+        run: |
+          docker run --rm -v ${{ github.workspace }}:/workspace kicad9-ci \
+            bash -c "
+              kicad-cli sch export bom hardware/kicad_project/*.kicad_sch -o hardware/bom.csv &&
+              kicad-cli sch export pdf hardware/kicad_project/*.kicad_sch -o hardware/exports/schematic.pdf &&
+              kicad-cli pcb export gerbers hardware/kicad_project/*.kicad_pcb -o hardware/exports/gerbers &&
+              kicad-cli pcb export step hardware/kicad_project/*.kicad_pcb -o hardware/exports/growbeam.step
+            "
