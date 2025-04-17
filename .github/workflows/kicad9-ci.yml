@@ -31,9 +31,14 @@ jobs:
               kicad-cli pcb export step hardware/kicad_project/*.kicad_pcb -o hardware/exports/growbeam.step
             "
 
-      - name: Render STEP to PNG
+      - name: Download FreeCAD AppImage
         run: |
-          bash render/render-step.sh
+          wget https://github.com/FreeCAD/FreeCAD/releases/latest/download/FreeCAD-0.21.2-Linux-x86_64.AppImage -O FreeCAD.AppImage
+          chmod +x FreeCAD.AppImage
+
+      - name: Render STEP to PNG using FreeCAD AppImage
+        run: |
+          ./FreeCAD.AppImage --console --run render/render-step.py
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
