@@ -1,15 +1,15 @@
-FROM ubuntu:22.04
+FROM kicad/kicad:9.0.1
 
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Install KiCad 9 nightly CLI and dependencies
-RUN apt update && apt install -y software-properties-common \
- && add-apt-repository -y ppa:kicad/kicad-9.0-releases \
- && apt update && apt install -y \
-    kicad kicad-cli \
+RUN apt-get update && apt-get install -y \
     git make python3 python3-pip \
     xvfb libglu1-mesa \
- && apt clean
+ && apt-get clean
+
+# Install FreeCAD
+RUN apt-get update && apt-get install -y freecad freecad-common
 
 # Set up default working directory
 WORKDIR /workspace
