@@ -4,6 +4,9 @@ on:
   push:
     paths:
       - 'hardware/kicad_project/**'
+  pull_request:
+    paths:
+      - 'hardware/kicad_project/**'      
   workflow_dispatch:
 
 jobs:
