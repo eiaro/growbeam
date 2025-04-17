@@ -1,6 +1,6 @@
 FROM kicad/kicad:9.0
 
-ENV DEBIAN_FRONTEND=noninteractive
+USER root
 
 # Install KiCad 9 nightly CLI and dependencies
 RUN apt-get update && apt-get install -y \
