@@ -1,0 +1,15 @@
+CERN Open Hardware Licence Version 2 - Strongly Reciprocal
+
+Copyright (C) 2025 Ronny Eia
+
+This source describes Open Hardware and is licensed under the CERN-OHL-S v2.
+
+You may redistribute and modify this documentation and make products using it under the terms of the CERN-OHL-S v2 (https://ohwr.org/cern_ohl_v2.txt).
+
+This documentation is distributed WITHOUT ANY EXPRESS OR IMPLIED WARRANTY, INCLUDING OF MERCHANTABILITY, SATISFACTORY QUALITY AND FITNESS FOR A PARTICULAR PURPOSE. See the CERN-OHL-S v2 for applicable conditions.
+
+Source location: https://github.com/eiaro/growbeam
+
+As per CERN-OHL-S v2 section 4.1, should You produce hardware based on this source, You must maintain this license notice and reproduce it in documentation or any other medium.
+
+The Complete Source includes all design files, schematics, bills of materials, and other files necessary to create, modify, and manufacture the hardware.
