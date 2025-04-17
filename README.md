@@ -29,7 +29,7 @@ All strings are powered by a shared 24 V DC source and operate at approx. 60�
 ---
 
 ## 📂 Repository Structure
-´´´
+```
 growbeam/ 
 ├── hardware/ # Schematics, PCB layout, and BOM 
 │ ├── schematics/ 
@@ -40,7 +40,7 @@ growbeam/
 ├── LICENSE # CERN-OHL-S v2 license 
 ├── README.md # This file 
 └── .gitignore # Ignore backups and build artifacts
-´´´
+```
 
 ---
 
