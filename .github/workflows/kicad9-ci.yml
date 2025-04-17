@@ -31,10 +31,6 @@ jobs:
               kicad-cli pcb export step hardware/kicad_project/*.kicad_pcb -o hardware/exports/growbeam.step
             "
 
-      - name: Install FreeCAD for rendering
-        run: |
-          sudo apt update && sudo apt install -y freecad freecad-common
-
       - name: Render STEP to PNG
         run: |
           bash render/render-step.sh
