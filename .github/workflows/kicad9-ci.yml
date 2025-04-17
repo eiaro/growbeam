@@ -38,7 +38,7 @@ jobs:
 
       - name: Render STEP to PNG using FreeCAD AppImage
         run: |
-          xvfb-run ./FreeCAD.AppImage --console --run render/render-step.py
+          xvfb-run ./FreeCAD.AppImage -l render/render-step.py
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
