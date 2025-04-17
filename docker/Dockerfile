@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y \
  && apt-get clean
 
 # Install FreeCAD
-RUN apt-get update && apt-get install -y freecad freecad-common
+# RUN apt-get update && apt-get install -y freecad freecad-common
 
 # Set up default working directory
 WORKDIR /workspace
