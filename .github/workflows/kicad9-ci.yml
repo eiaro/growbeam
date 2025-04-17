@@ -33,7 +33,7 @@ jobs:
 
       - name: Download FreeCAD AppImage
         run: |
-          wget https://github.com/FreeCAD/FreeCAD/releases/latest/download/FreeCAD-0.21.2-Linux-x86_64.AppImage -O FreeCAD.AppImage
+          wget https://github.com/FreeCAD/FreeCAD/releases/download/1.0.0/FreeCAD_1.0.0-conda-Linux-x86_64-py311.AppImage -O FreeCAD.AppImage
           chmod +x FreeCAD.AppImage
 
       - name: Render STEP to PNG using FreeCAD AppImage
