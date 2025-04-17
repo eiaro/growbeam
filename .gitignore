@@ -1,0 +1,28 @@
+# KiCad project files
+*.bak
+*.bck
+*.tmp
+*.kicad_prl
+*.kicad_sch-bak
+*.kicad_pcb-bak
+*.dcm
+*.net
+*.xml
+*.cache
+*.log
+
+# Backup folders
+_autosave/
+
+# Gerber and fabrication outputs
+*.gbr
+*.gtl
+*.gbl
+*.gts
+*.gbs
+*.gto
+*.gbo
+*.drl
+*.zip
+*.pos
+*.csv
