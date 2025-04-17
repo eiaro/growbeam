@@ -4,6 +4,9 @@ on:
   push:
     paths:
       - 'hardware/kicad_project/**'
+  pull_request:
+    paths:
+      - 'hardware/kicad_project/**'      
   workflow_dispatch:
 
 jobs:
@@ -14,7 +17,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up Docker
+      - name: Set up Docker and build KiCad 9 container
         run: |
           docker build -t kicad9-ci ./docker
 
@@ -27,3 +30,20 @@ jobs:
               kicad-cli pcb export gerbers hardware/kicad_project/*.kicad_pcb -o hardware/exports/gerbers &&
               kicad-cli pcb export step hardware/kicad_project/*.kicad_pcb -o hardware/exports/growbeam.step
             "
+
+      - name: Install FreeCAD for rendering
+        run: |
+          sudo apt update && sudo apt install -y freecad freecad-common
+
+      - name: Render STEP to PNG
+        run: |
+          bash render/render-step.sh
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: growbeam-exports
+          path: |
+            hardware/bom.csv
+            hardware/exports/
+
