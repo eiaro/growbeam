@@ -1,15 +1,18 @@
 import FreeCAD
-import ImportGui
 import FreeCADGui
+import ImportGui
 import os
 
-doc = FreeCAD.newDocument()
-ImportGui.insert("hardware/exports/growbeam.step", doc.Name)
+step_file = os.path.abspath("hardware/exports/growbeam.step")
+png_file = os.path.abspath("hardware/exports/growbeam.png")
 
-FreeCADGui.showMainWindow()
-view = FreeCADGui.activeDocument().activeView()
-view.viewIsometric()
-view.setCameraType("Perspective")
-view.zoomToFit()
-view.saveImage("hardware/exports/growbeam.png", 1920, 1080, "White")
+doc = FreeCAD.newDocument()
+ImportGui.insert(step_file, doc.Name)
+
+FreeCADGui.ActiveDocument.ActiveView.viewIsometric()
+FreeCADGui.ActiveDocument.ActiveView.setCameraType("Perspective")
+FreeCADGui.ActiveDocument.ActiveView.fitAll()
+
+FreeCADGui.ActiveDocument.ActiveView.saveImage(png_file, 1920, 1080, "White")
+
 FreeCAD.closeDocument(doc.Name)
