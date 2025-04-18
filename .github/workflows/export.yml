@@ -17,6 +17,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
 
       - name: Build Docker Image with KiCad 9
         run: |
@@ -24,7 +26,7 @@ jobs:
 
       - name: Run ERC, DRC, and export
         run: |
-          docker run --rm -v ${{ github.workspace }}:/workspace -w /workspace kicad9-ci             bash -c "
+          docker run --rm -v ${{ github.workspace }}:/workspace -w /workspace kicad9-ci bash -c "
               mkdir -p /workspace/hardware/exports &&
               kicad-cli sch run-erc /workspace/hardware/kicad_project/*.kicad_sch ||
                 echo 'ERC completed with warnings or errors' &&
@@ -43,7 +45,7 @@ jobs:
           git add --force hardware/bom.csv
           git add --force hardware/exports/schematic.pdf
           git add --force hardware/exports/gerbers
-          git add --force hardware/exports/growbeam.step            
+          git add --force hardware/exports/growbeam.step
 
       - name: Commit and Push Generated Files
         uses: peter-evans/create-pull-request@v5
