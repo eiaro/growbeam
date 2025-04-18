@@ -1,0 +1,28 @@
+name: Commit Exported Files
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  commit-exports:
+    runs-on: ubuntu-latest
+    name: Commit and push exported files to main
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: true
+
+      - name: Set up Git user
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Commit exported files
+        run: |
+          git add hardware/bom.csv
+          git add hardware/exports/
+          git commit -m "Auto-update exported files [skip ci]" || echo "No changes to commit"
+          git push
