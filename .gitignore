@@ -32,3 +32,7 @@ hardware/kicad_project/#auto_saved_files#
 hardware/kicad_project/~growlight-module.kicad_sch.lck
 hardware/kicad_project/production
 hardware/kicad_project/bom
+hardware/kicad_project/fabrication-toolkit-options.json
+
+# PyCache
+**/__pycache__/
