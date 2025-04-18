@@ -64,7 +64,7 @@ jobs:
 
       - name: Commit and push exported files
         run: |
-          git add hardware/bom.csv
+          git add -f hardware/bom.csv
           git add hardware/exports/
           git commit -m "Auto-update exported files [skip ci]" || echo "No changes to commit"
           git push
