@@ -19,7 +19,7 @@ jobs:
 
       - name: Run Export in Docker
         run: |
-          docker run --rm -v ${{ github.workspace }}:/workspace kicad9-ci             bash -c "
+          docker run --rm -v ${{ github.workspace }}:/workspace -w /workspace kicad9-ci             bash -c "
               kicad-cli sch export bom hardware/kicad_project/*.kicad_sch -o hardware/bom.csv &&
               kicad-cli sch export pdf hardware/kicad_project/*.kicad_sch -o hardware/exports/schematic.pdf &&
               kicad-cli pcb export gerbers hardware/kicad_project/*.kicad_pcb -o hardware/exports/gerbers &&
