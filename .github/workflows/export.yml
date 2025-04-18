@@ -1,0 +1,41 @@
+name: Export KiCad Files and Run Checks
+
+on:
+  pull_request:
+    paths:
+      - 'hardware/kicad_project/**'
+  workflow_dispatch:
+
+jobs:
+  export-and-validate:
+    runs-on: ubuntu-latest
+    name: Generate Exports and Run ERC/DRC
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Build Docker Image with KiCad 9
+        run: |
+          docker build -t kicad9-ci ./docker
+
+      - name: Run ERC, DRC, and export
+        run: |
+          docker run --rm -v ${{ github.workspace }}:/workspace -w /workspace kicad9-ci             bash -c "
+              mkdir -p /workspace/hardware/exports &&
+              kicad-cli sch run-erc /workspace/hardware/kicad_project/*.kicad_sch ||
+                echo 'ERC completed with warnings or errors' &&
+              kicad-cli pcb run-drc /workspace/hardware/kicad_project/*.kicad_pcb ||
+                echo 'DRC completed with warnings or errors' &&
+              kicad-cli sch export bom /workspace/hardware/kicad_project/*.kicad_sch -o /workspace/hardware/bom.csv &&
+              kicad-cli sch export pdf /workspace/hardware/kicad_project/*.kicad_sch -o /workspace/hardware/exports/schematic.pdf &&
+              kicad-cli pcb export gerbers /workspace/hardware/kicad_project/*.kicad_pcb -o /workspace/hardware/exports/gerbers &&
+              kicad-cli pcb export step /workspace/hardware/kicad_project/*.kicad_pcb -o /workspace/hardware/exports/growbeam.step
+            "
+
+      - name: Upload exports as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: growbeam-exports
+          path: |
+            hardware/bom.csv
+            hardware/exports/
