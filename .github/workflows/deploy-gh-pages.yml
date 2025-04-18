@@ -37,5 +37,8 @@ jobs:
         with:
           path: docs/public
 
+      - name: List public directory
+        run: ls -l docs/public
+
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v2
