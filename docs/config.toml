@@ -1,0 +1,25 @@
+baseURL = "https://eiaro.github.io/growbeam/"
+languageCode = "en-us"
+title = "GrowBeam"
+theme = "ananke"
+
+[params]
+  description = "GrowBeam is a modular open-source grow light system using Samsung LM301H and Luxeon Deep Red LEDs."
+  author = "eiaro"
+
+[markup]
+  [markup.goldmark.renderer]
+    unsafe = true
+
+[menu]
+  [[menu.main]]
+    identifier = "features"
+    name = "Features"
+    url = "/features/"
+    weight = 1
+
+  [[menu.main]]
+    identifier = "downloads"
+    name = "Downloads"
+    url = "/downloads/"
+    weight = 2
