@@ -6,6 +6,10 @@ on:
       - 'hardware/kicad_project/**'
   workflow_dispatch:
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   export-and-validate:
     runs-on: ubuntu-latest
@@ -31,6 +35,29 @@ jobs:
               kicad-cli pcb export gerbers /workspace/hardware/kicad_project/*.kicad_pcb -o /workspace/hardware/exports/gerbers &&
               kicad-cli pcb export step /workspace/hardware/kicad_project/*.kicad_pcb -o /workspace/hardware/exports/growbeam.step
             "
+
+      - name: Force Add Generated Files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add --force hardware/bom.csv
+          git add --force hardware/exports/schematic.pdf
+          git add --force hardware/exports/gerbers
+          git add --force hardware/exports/growbeam.step            
+
+      - name: Commit and Push Generated Files
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "Auto-generate files after ERC/DRC checks"
+          branch: ${{ github.event.pull_request.head.ref }}
+          title: "Update generated files"
+          body: |
+            This commit contains the latest automatically generated files:
+            - BoM (bom.csv)
+            - Schematic PDF
+            - Gerbers
+            - STEP model
 
       - name: Upload exports as artifact
         uses: actions/upload-artifact@v4
