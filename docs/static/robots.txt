@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://eiaro.github.io/growbeam/sitemap.xml
