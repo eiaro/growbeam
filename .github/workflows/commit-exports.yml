@@ -1,4 +1,4 @@
-name: Commit Exported Files
+name: Export and Commit KiCad Files
 
 on:
   push:
@@ -6,9 +6,30 @@ on:
   workflow_dispatch:
 
 jobs:
-  commit-exports:
+  export:
     runs-on: ubuntu-latest
-    name: Commit and push exported files to main
+    name: Export KiCad Outputs
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Build Docker Image with KiCad 9
+        run: |
+          docker build -t kicad9-ci ./docker
+
+      - name: Run Export in Docker
+        run: |
+          docker run --rm -v ${{ github.workspace }}:/workspace kicad9-ci             bash -c "
+              kicad-cli sch export bom hardware/kicad_project/*.kicad_sch -o hardware/bom.csv &&
+              kicad-cli sch export pdf hardware/kicad_project/*.kicad_sch -o hardware/exports/schematic.pdf &&
+              kicad-cli pcb export gerbers hardware/kicad_project/*.kicad_pcb -o hardware/exports/gerbers &&
+              kicad-cli pcb export step hardware/kicad_project/*.kicad_pcb -o hardware/exports/growbeam.step
+            "
+
+  commit:
+    runs-on: ubuntu-latest
+    needs: export
+    name: Commit Exported Files
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -20,7 +41,7 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: Commit exported files
+      - name: Commit and push exported files
         run: |
           git add hardware/bom.csv
           git add hardware/exports/
