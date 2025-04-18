@@ -48,18 +48,11 @@ jobs:
           git add --force hardware/exports/growbeam.step
 
       - name: Commit and Push Generated Files
-        uses: peter-evans/create-pull-request@v5
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "Auto-generate files after ERC/DRC checks"
-          branch: ${{ github.event.pull_request.head.ref }}
-          title: "Update generated files"
-          body: |
-            This commit contains the latest automatically generated files:
-            - BoM (bom.csv)
-            - Schematic PDF
-            - Gerbers
-            - STEP model
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git commit -m "Auto-generate files after ERC/DRC checks" || echo "No changes to commit"
+          git push origin ${{ github.event.pull_request.head.ref }}
 
       - name: Upload exports as artifact
         uses: actions/upload-artifact@v4
