@@ -17,13 +17,15 @@ jobs:
         run: |
           docker build -t kicad9-ci ./docker
 
-      - name: Run Export in Docker
+      - name: Run Export in Docker (with absolute paths)
         run: |
           docker run --rm -v ${{ github.workspace }}:/workspace -w /workspace kicad9-ci             bash -c "
-              kicad-cli sch export bom hardware/kicad_project/*.kicad_sch -o hardware/bom.csv &&
-              kicad-cli sch export pdf hardware/kicad_project/*.kicad_sch -o hardware/exports/schematic.pdf &&
-              kicad-cli pcb export gerbers hardware/kicad_project/*.kicad_pcb -o hardware/exports/gerbers &&
-              kicad-cli pcb export step hardware/kicad_project/*.kicad_pcb -o hardware/exports/growbeam.step
+              mkdir -p /workspace/hardware/exports &&
+              kicad-cli sch export bom /workspace/hardware/kicad_project/*.kicad_sch -o /workspace/hardware/bom.csv &&
+              kicad-cli sch export pdf /workspace/hardware/kicad_project/*.kicad_sch -o /workspace/hardware/exports/schematic.pdf &&
+              kicad-cli pcb export gerbers /workspace/hardware/kicad_project/*.kicad_pcb -o /workspace/hardware/exports/gerbers &&
+              kicad-cli pcb export step /workspace/hardware/kicad_project/*.kicad_pcb -o /workspace/hardware/exports/growbeam.step &&
+              ls -lh /workspace/hardware && ls -lh /workspace/hardware/exports
             "
 
   commit:
@@ -40,6 +42,11 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Confirm required files exist
+        run: |
+          test -f hardware/bom.csv
+          test -f hardware/exports/schematic.pdf
 
       - name: Commit and push exported files
         run: |
