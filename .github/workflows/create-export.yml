@@ -13,11 +13,19 @@ jobs:
         with:
           persist-credentials: true
 
-      - name: Download export artifacts from previous run
-        uses: actions/download-artifact@v4
-        with:
-          name: growbeam-exports
-          path: hardware/
+      - name: Build Docker Image with KiCad 9
+        run: |
+          docker build -t kicad9-ci ./docker
+
+      - name: Regenerate export files
+        run: |
+          docker run --rm -v ${{ github.workspace }}:/workspace -w /workspace kicad9-ci             bash -c "
+              mkdir -p /workspace/hardware/exports &&
+              kicad-cli sch export bom /workspace/hardware/kicad_project/*.kicad_sch -o /workspace/hardware/bom.csv &&
+              kicad-cli sch export pdf /workspace/hardware/kicad_project/*.kicad_sch -o /workspace/hardware/exports/schematic.pdf &&
+              kicad-cli pcb export gerbers /workspace/hardware/kicad_project/*.kicad_pcb -o /workspace/hardware/exports/gerbers &&
+              kicad-cli pcb export step /workspace/hardware/kicad_project/*.kicad_pcb -o /workspace/hardware/exports/growbeam.step
+            "
 
       - name: Set up Git user
         run: |
