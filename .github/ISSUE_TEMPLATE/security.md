@@ -2,8 +2,9 @@
 name: "\U0001F512 Security issue"
 about: Report a security-related concern or vulnerability
 title: "[SECURITY] "
-labels: security
+labels: ''
 assignees: eiaro
+
 ---
 
 ## Description

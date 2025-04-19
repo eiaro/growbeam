@@ -1,9 +1,10 @@
 ---
-name: "🧭 Code of Conduct Concern"
+name: "\U0001F9ED Code of Conduct Concern"
 about: Report a concern or behavior that may violate the Code of Conduct
 title: "[CONDUCT] "
-labels: conduct
+labels: ''
 assignees: eiaro
+
 ---
 
 ## Description
