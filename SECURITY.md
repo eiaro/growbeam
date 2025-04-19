@@ -10,7 +10,7 @@ GrowBeam is a hardware-focused open source project and does not contain executab
 
 ## Reporting a Vulnerability
 
-If you believe you’ve found a security vulnerability or concern in this repository, **please open a new issue** using the [Security issue template](../../issues/new/choose).
+If you believe you’ve found a security vulnerability or concern in this repository, **please open a new issue** using the [Security issue template](../../issues/new?assignees=&labels=security&template=security.md).
 
 Make sure to include:
 - A clear description of the issue
