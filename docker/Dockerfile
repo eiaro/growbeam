@@ -1,4 +1,4 @@
-FROM kicad/kicad:9.0
+FROM docker.io/kicad/kicad:9.0
 
 USER root
 
