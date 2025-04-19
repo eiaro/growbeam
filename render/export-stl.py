@@ -1,10 +1,18 @@
 import FreeCAD, Import
 import os
+import sys
 
-# Load STEP file
+step_path = os.path.abspath("hardware/exports/growbeam.step")
+output_path = os.path.abspath("render/growbeam.stl")
+
+if not os.path.exists(step_path):
+    print(f"ERROR: STEP file not found at {step_path}", file=sys.stderr)
+    sys.exit(1)
+
 doc = FreeCAD.newDocument()
-Import.insert(os.path.abspath("hardware/exports/growbeam.step"), doc.Name)
+Import.insert(step_path, doc.Name)
 
-# Export as STL
 part = doc.Objects[0]
-part.Shape.exportStl(os.path.abspath("render/growbeam.stl"))
+part.Shape.exportStl(output_path)
+
+print(f"✅ Exported STL to {output_path}")
