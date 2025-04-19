@@ -38,6 +38,22 @@ jobs:
               kicad-cli pcb export step /workspace/hardware/kicad_project/*.kicad_pcb -o /workspace/hardware/exports/growbeam.step
             "
 
+      - name: Convert STEP to STL using FreeCAD
+        run: |
+          sudo apt-get update && sudo apt-get install -y freecad
+          freecadcmd render/export-stl.py
+
+      - name: Render board with Blender
+        run: |
+          sudo apt-get install -y blender
+          blender -b -P render/render.py
+
+      - name: Upload rendered image
+        uses: actions/upload-artifact@v4
+        with:
+          name: growbeam-render
+          path: render/output.png            
+
       - name: Force Add Generated Files
         run: |
           git config user.name "github-actions[bot]"
