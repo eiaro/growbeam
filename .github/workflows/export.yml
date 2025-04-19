@@ -38,10 +38,14 @@ jobs:
               kicad-cli pcb export step /workspace/hardware/kicad_project/*.kicad_pcb -o /workspace/hardware/exports/growbeam.step
             "
 
-      - name: Convert STEP to STL using FreeCAD
+      - name: Download FreeCAD 1.0 AppImage
         run: |
-          sudo apt-get update && sudo apt-get install -y freecad
-          freecadcmd render/export-stl.py
+          wget https://github.com/FreeCAD/FreeCAD/releases/download/1.0.0/FreeCAD-1.0.0-Linux-x86_64.AppImage -O tools/FreeCAD.AppImage
+          chmod +x tools/FreeCAD.AppImage
+      
+      - name: Convert STEP to STL
+        run: |
+          ./tools/FreeCAD.AppImage --console --python render/export-stl.py
 
       - name: Render board with Blender
         run: |
