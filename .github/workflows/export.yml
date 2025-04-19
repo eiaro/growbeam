@@ -40,7 +40,8 @@ jobs:
 
       - name: Download FreeCAD 1.0 AppImage
         run: |
-          wget https://github.com/FreeCAD/FreeCAD/releases/download/1.0.0/FreeCAD-1.0.0-Linux-x86_64.AppImage -O tools/FreeCAD.AppImage
+          mkdir -p tools
+          wget https://github.com/FreeCAD/FreeCAD/releases/download/1.0.0/FreeCAD_1.0.0-conda-Linux-x86_64-py311.AppImage -O tools/FreeCAD.AppImage
           chmod +x tools/FreeCAD.AppImage
       
       - name: Convert STEP to STL
