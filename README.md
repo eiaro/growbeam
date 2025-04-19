@@ -4,6 +4,12 @@
 
 ![License: CERN-OHL-S](https://img.shields.io/badge/license-CERN--OHL--S-blue)
 ![Status: Active](https://img.shields.io/badge/status-active-brightgreen)
+![CI](https://github.com/eiaro/growbeam/actions/workflows/export.yml/badge.svg)
+![Last Commit](https://img.shields.io/github/last-commit/eiaro/growbeam)
+![Issues](https://img.shields.io/github/issues/eiaro/growbeam)
+[![Code of Conduct](https://img.shields.io/badge/Conduct-active-brightgreen)](CODE_OF_CONDUCT.md)
+[![Website](https://img.shields.io/website?url=https%3A%2F%2Feiaro.github.io%2Fgrowbeam)](https://eiaro.github.io/growbeam/)
+
 
 **GrowBeam** is a modular open-source grow light system designed for indoor gardens, hydroponic setups, and controlled environment agriculture. Each module combines high-efficiency white and deep red LEDs to provide a balanced light spectrum optimized for plant growth.
 
