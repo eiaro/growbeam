@@ -44,9 +44,10 @@ jobs:
           wget https://github.com/FreeCAD/FreeCAD/releases/download/1.0.0/FreeCAD_1.0.0-conda-Linux-x86_64-py311.AppImage -O tools/FreeCAD.AppImage
           chmod +x tools/FreeCAD.AppImage
       
-      - name: Convert STEP to STL
+      - name: Convert STEP to STL using FreeCAD
         run: |
-          ./tools/FreeCAD.AppImage --console --python render/export-stl.py
+          ls hardware/exports
+          ./tools/FreeCAD.AppImage --console --python render/export-stl.py || exit 1
 
       - name: Render board with Blender
         run: |
