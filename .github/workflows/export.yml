@@ -62,6 +62,8 @@ jobs:
           git add --force hardware/exports/schematic.pdf
           git add --force hardware/exports/gerbers
           git add --force hardware/exports/growbeam.step
+          git add --force hardware/exports/growbeam.stl
+          git add --force hardware/exports/growbeam.png
 
       - name: Commit and Push Generated Files
         run: |
