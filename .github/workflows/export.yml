@@ -50,7 +50,9 @@ jobs:
           ./tools/FreeCAD.AppImage --console -l render/export-stl.py || exit 1
 
       - name: Install Blender and OpenGL dependencies
-        run: sudo apt-get install -y libgl1-mesa-dev libegl1-mesa xvfb blender
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y blender xvfb libgl1-mesa-dev libegl-mesa0
 
       - name: Render board with Blender
         run: xvfb-run --auto-servernum blender -b -P render/render.py
