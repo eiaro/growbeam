@@ -47,7 +47,7 @@ jobs:
       - name: Convert STEP to STL using FreeCAD
         run: |
           ls hardware/exports
-          ./tools/FreeCAD.AppImage --console --python render/export-stl.py || exit 1
+          ./tools/FreeCAD.AppImage --console -l render/export-stl.py || exit 1
 
       - name: Render board with Blender
         run: |
