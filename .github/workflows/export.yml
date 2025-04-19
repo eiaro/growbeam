@@ -28,9 +28,9 @@ jobs:
         run: |
           docker run --rm -v ${{ github.workspace }}:/workspace -w /workspace kicad9-ci bash -c "
               mkdir -p /workspace/hardware/exports &&
-              kicad-cli sch run-erc /workspace/hardware/kicad_project/*.kicad_sch ||
+              kicad-cli sch erc /workspace/hardware/kicad_project/*.kicad_sch ||
                 echo 'ERC completed with warnings or errors' &&
-              kicad-cli pcb run-drc /workspace/hardware/kicad_project/*.kicad_pcb ||
+              kicad-cli pcb drc /workspace/hardware/kicad_project/*.kicad_pcb ||
                 echo 'DRC completed with warnings or errors' &&
               kicad-cli sch export bom /workspace/hardware/kicad_project/*.kicad_sch -o /workspace/hardware/bom.csv &&
               kicad-cli sch export pdf /workspace/hardware/kicad_project/*.kicad_sch -o /workspace/hardware/exports/schematic.pdf &&
