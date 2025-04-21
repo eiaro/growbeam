@@ -32,7 +32,7 @@ jobs:
             ghcr.io/${{ github.repository_owner }}/kicad9-ci:latest \
             bash -c "
               kicad-cli sch erc --severity-error hardware/kicad_project/*.kicad_sch > reports/erc.txt 2>&1 
-              echo \$? > reports/erc_status.txt'
+              echo \$? > reports/erc_status.txt
               kicad-cli pcb drc --severity-error hardware/kicad_project/*.kicad_pcb > reports/drc.txt 2>&1
               echo \$? > reports/drc_status.txt
             "          
