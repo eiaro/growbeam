@@ -7,19 +7,19 @@ WORKDIR := /workspace
 # Build the Docker/Podman image for KiCad 9 CLI
 .PHONY: build-image
 build-image:
-	$(CONTAINER_ENGINE) build -t $(IMAGE) -f docker/kicad9.Dockerfile .
+	$(CONTAINER_ENGINE) build -t $(IMAGE) -f docker/Dockerfile .
 
 # Run ERC check
 .PHONY: erc
 erc:
 	$(CONTAINER_ENGINE) run --rm -v "$(PWD):$(WORKDIR)" -w $(WORKDIR) $(IMAGE) \
-	kicad-cli sch erc hardware/kicad_project/growbeam.kicad_sch -o hardware/exports/erc.txt
+	kicad-cli sch erc --severity-error hardware/kicad_project/growbeam.kicad_sch -o hardware/exports/erc.txt
 
 # Run DRC check
 .PHONY: drc
 drc:
 	$(CONTAINER_ENGINE) run --rm -v "$(PWD):$(WORKDIR)" -w $(WORKDIR) $(IMAGE) \
-	kicad-cli pcb drc hardware/kicad_project/growbeam.kicad_pcb -o hardware/exports/drc.txt
+	kicad-cli pcb drc --severity-error hardware/kicad_project/growbeam.kicad_pcb -o hardware/exports/drc.txt
 
 # Clean generated output files
 .PHONY: clean
