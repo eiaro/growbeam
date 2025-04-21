@@ -1,6 +1,10 @@
 name: Export generated KiCad Files
 
 on:
+  workflow_run:
+    workflows: ["Run ERC and DRC"]
+    types:
+      - completed
   pull_request:
     paths:
       - 'hardware/kicad_project/**'
@@ -11,7 +15,8 @@ permissions:
   pull-requests: write
 
 jobs:
-  export-and-validate:
+  export:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     name: Generate Exports
     steps:
