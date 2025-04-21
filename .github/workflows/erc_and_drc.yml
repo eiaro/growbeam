@@ -9,16 +9,26 @@ on:
   workflow_dispatch:
 
 jobs:
-  validate-and-publish:
+  validate:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Run DRC and ERC checks
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run DRC and ERC checks with GHCR image
         run: |
-          docker build -t kicad9-ci ./docker
-          docker run --rm -v "${{ github.workspace }}:/workspace" -w /workspace kicad9-ci bash -c "
-            kicad-cli sch erc hardware/kicad_project/*.kicad_sch &&
-            kicad-cli pcb drc hardware/kicad_project/*.kicad_pcb
-          "
+          docker run --rm \
+            -v "${{ github.workspace }}:/workspace" \
+            -w /workspace \
+            ghcr.io/${{ github.repository_owner }}/kicad9-ci:latest \
+            bash -c "
+              kicad-cli sch erc hardware/kicad_project/*.kicad_sch &&
+              kicad-cli pcb drc hardware/kicad_project/*.kicad_pcb
+            "
