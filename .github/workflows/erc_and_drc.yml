@@ -1,0 +1,24 @@
+name: Run ERC and DRC
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'hardware/kicad_project/*.kicad_pcb'
+      - 'hardware/kicad_project/*.kicad_sch'
+  workflow_dispatch:
+
+jobs:
+  validate-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run DRC and ERC checks
+        run: |
+          docker build -t kicad9-ci ./docker
+          docker run --rm -v "${{ github.workspace }}:/workspace" -w /workspace kicad9-ci bash -c "
+            kicad-cli sch erc hardware/kicad_project/*.kicad_sch &&
+            kicad-cli pcb drc hardware/kicad_project/*.kicad_pcb
+          "
