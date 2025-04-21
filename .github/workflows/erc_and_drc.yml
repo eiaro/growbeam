@@ -31,8 +31,8 @@ jobs:
             -w /workspace \
             ghcr.io/${{ github.repository_owner }}/kicad9-ci:latest \
             bash -c "
-              kicad-cli sch erc hardware/kicad_project/*.kicad_sch > reports/erc.txt 2>&1 || echo '[!] ERC reported issues'
-              kicad-cli pcb drc hardware/kicad_project/*.kicad_pcb > reports/drc.txt 2>&1 || echo '[!] DRC reported issues'
+              kicad-cli sch erc --severity-error hardware/kicad_project/*.kicad_sch > reports/erc.txt 2>&1 || echo '[!] ERC reported issues'
+              kicad-cli pcb drc --severity-error hardware/kicad_project/*.kicad_pcb > reports/drc.txt 2>&1 || echo '[!] DRC reported issues'
             "
           echo '::set-output name=erc::'$(grep -c . reports/erc.txt)
           echo '::set-output name=drc::'$(grep -c . reports/drc.txt)
