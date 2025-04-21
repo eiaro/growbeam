@@ -7,7 +7,7 @@ WORKDIR := /workspace
 # Build the Docker/Podman image for KiCad 9 CLI
 .PHONY: build-image
 build-image:
-	$(CONTAINER_ENGINE) build -t $(IMAGE) -f docker/kicad9.Dockerfile .
+	$(CONTAINER_ENGINE) build -t $(IMAGE) -f docker/Dockerfile .
 
 # Run ERC check
 .PHONY: erc
