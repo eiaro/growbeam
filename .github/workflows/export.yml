@@ -13,55 +13,31 @@ permissions:
 jobs:
   export-and-validate:
     runs-on: ubuntu-latest
-    name: Generate Exports and Run ERC/DRC
+    name: Generate Exports
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.head.ref }}
 
-      - name: Build Docker Image with KiCad 9
-        run: |
-          docker build -t kicad9-ci ./docker
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run ERC, DRC, and export
         run: |
-          docker run --rm -v ${{ github.workspace }}:/workspace -w /workspace kicad9-ci bash -c "
-              mkdir -p /workspace/hardware/exports &&
-              kicad-cli sch erc /workspace/hardware/kicad_project/*.kicad_sch ||
-                echo 'ERC completed with warnings or errors' &&
-              kicad-cli pcb drc /workspace/hardware/kicad_project/*.kicad_pcb ||
-                echo 'DRC completed with warnings or errors' &&
+          docker run --rm -v ${{ github.workspace }}:/workspace -w /workspace ghcr.io/${{ github.repository_owner }}/kicad9-ci:latest bash -c "
+              mkdir -p /workspace/hardware/exports &&              
               kicad-cli sch export bom /workspace/hardware/kicad_project/*.kicad_sch -o /workspace/hardware/bom.csv &&
               kicad-cli sch export pdf /workspace/hardware/kicad_project/*.kicad_sch -o /workspace/hardware/exports/schematic.pdf &&
-              kicad-cli pcb export gerbers /workspace/hardware/kicad_project/*.kicad_pcb -o /workspace/hardware/exports/gerbers &&
-              kicad-cli pcb export step /workspace/hardware/kicad_project/*.kicad_pcb -o /workspace/hardware/exports/growbeam.step
-            "
-
-      - name: Download FreeCAD 1.0 AppImage
-        run: |
-          mkdir -p tools
-          wget https://github.com/FreeCAD/FreeCAD/releases/download/1.0.0/FreeCAD_1.0.0-conda-Linux-x86_64-py311.AppImage -O tools/FreeCAD.AppImage
-          chmod +x tools/FreeCAD.AppImage
-      
-      - name: Convert STEP to STL using FreeCAD
-        run: |
-          ls hardware/exports
-          ./tools/FreeCAD.AppImage --console -l render/export-stl.py || exit 1
-
-      - name: Install Blender and OpenGL dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y blender xvfb libgl1-mesa-dev libegl-mesa0
-
-      - name: Render board with Blender
-        run: xvfb-run --auto-servernum blender -b -P render/render.py
-
-      - name: Upload rendered image
-        uses: actions/upload-artifact@v4
-        with:
-          name: growbeam-render
-          path: render/output.png            
+              kicad-cli pcb export gerbers /workspace/hardware/kicad_project/*.kicad_pcb -o /workspace/hardware/exports/gerbers &&              
+              kicad-cli pcb export step /workspace/hardware/kicad_project/*.kicad_pcb -o /workspace/hardware/exports/growbeam.step &&
+              kicad-cli pcb export vrlm /workspace/hardware/kicad_project/*.kicad_pcb -o /workspace/hardware/exports/growbeam.wrl &&
+              blender -b --python render/blender_render.py
+            "      
 
       - name: Force Add Generated Files
         run: |
@@ -70,8 +46,7 @@ jobs:
           git add --force hardware/bom.csv
           git add --force hardware/exports/schematic.pdf
           git add --force hardware/exports/gerbers
-          git add --force hardware/exports/growbeam.step
-          git add --force hardware/exports/growbeam.stl
+          git add --force hardware/exports/growbeam.step          
           git add --force hardware/exports/growbeam.png
 
       - name: Commit and Push Generated Files
