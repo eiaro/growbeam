@@ -4,7 +4,7 @@
 
 ![License: CERN-OHL-S](https://img.shields.io/badge/license-CERN--OHL--S-blue)
 ![Status: Active](https://img.shields.io/badge/status-active-brightgreen)
-![CI](https://github.com/eiaro/growbeam/actions/workflows/export.yml/badge.svg)
+[![ERC and DRC](https://github.com/eiaro/growbeam/actions/workflows/erc_and_drc.yml/badge.svg)](https://github.com/eiaro/growbeam/actions/workflows/erc_and_drc.yml)
 ![Last Commit](https://img.shields.io/github/last-commit/eiaro/growbeam)
 ![Issues](https://img.shields.io/github/issues/eiaro/growbeam)
 [![Code of Conduct](https://img.shields.io/badge/Conduct-active-brightgreen)](CODE_OF_CONDUCT.md)
