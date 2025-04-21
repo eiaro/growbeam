@@ -1,8 +1,7 @@
 name: Run ERC and DRC
 
 on:
-  push:
-    branches: [main]
+  pull_request:    
     paths:
       - 'hardware/kicad_project/*.kicad_pcb'
       - 'hardware/kicad_project/*.kicad_sch'
