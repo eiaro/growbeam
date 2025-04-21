@@ -1,7 +1,8 @@
 name: Run ERC and DRC
 
 on:
-  pull_request:    
+  push:
+    branches: [main]
     paths:
       - 'hardware/kicad_project/*.kicad_pcb'
       - 'hardware/kicad_project/*.kicad_sch'
@@ -30,41 +31,34 @@ jobs:
             -w /workspace \
             ghcr.io/${{ github.repository_owner }}/kicad9-ci:latest \
             bash -c "
-              kicad-cli sch erc --severity-error hardware/kicad_project/*.kicad_sch > reports/erc.txt 2>&1 || echo '[!] ERC reported issues'
-              kicad-cli pcb drc --severity-error hardware/kicad_project/*.kicad_pcb > reports/drc.txt 2>&1 || echo '[!] DRC reported issues'
-            "
-          echo '::set-output name=erc::'$(grep -c . reports/erc.txt)
-          echo '::set-output name=drc::'$(grep -c . reports/drc.txt)
+              kicad-cli sch erc --severity-error hardware/kicad_project/*.kicad_sch > reports/erc.txt 2>&1 
+              echo \$? > reports/erc_status.txt'
+              kicad-cli pcb drc --severity-error hardware/kicad_project/*.kicad_pcb > reports/drc.txt 2>&1
+              echo \$? > reports/drc_status.txt
+            "          
 
-      - name: Upload DRC/ERC results as artifact
-        uses: actions/upload-artifact@v4
+      - name: Display ERC and DRC results in PR comment
+        uses: marocchino/sticky-pull-request-comment@v2
         with:
-          name: kicad-checks
-          path: reports/
+          path: reports/erc.txt
 
-      - name: Comment on Pull Request
-        if: github.event_name == 'pull_request'
-        uses: peter-evans/create-or-update-comment@v4
+      - name: Append DRC results
+        run: |
+          echo '---' >> reports/erc.txt
+          cat reports/drc.txt >> reports/erc.txt
+
+      - name: Re-post full report in PR
+        uses: marocchino/sticky-pull-request-comment@v2
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          issue-number: ${{ github.event.pull_request.number }}
-          body: |
-            ## 🔍 KiCad Validation Results
-
-            ### 🧪 ERC Report:
-            ```
-            ${{ steps.run_checks.outputs.erc }}
-            ```
-            [Download full ERC log](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
-
-            ### 🧪 DRC Report:
-            ```
-            ${{ steps.run_checks.outputs.drc }}
-            ```
-            [Download full DRC log](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+          path: reports/erc.txt
 
       - name: Fail if ERC/DRC has issues
-        if: steps.run_checks.outputs.erc != '0' || steps.run_checks.outputs.drc != '0'
         run: |
-          echo "ERC or DRC checks reported issues."
-          exit 1
+          ERC_CODE=$(cat reports/erc_status.txt)
+          DRC_CODE=$(cat reports/drc_status.txt)
+          if [ "$ERC_CODE" != "0" ] || [ "$DRC_CODE" != "0" ]; then
+            echo "❌ ERC or DRC check failed."
+            exit 1
+          else
+            echo "✅ ERC and DRC passed."
+          fi
