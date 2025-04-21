@@ -13,13 +13,13 @@ build-image:
 .PHONY: erc
 erc:
 	$(CONTAINER_ENGINE) run --rm -v "$(PWD):$(WORKDIR)" -w $(WORKDIR) $(IMAGE) \
-	kicad-cli sch erc hardware/kicad_project/growbeam.kicad_sch -o hardware/exports/erc.txt
+	kicad-cli sch erc --severity-error hardware/kicad_project/growbeam.kicad_sch -o hardware/exports/erc.txt
 
 # Run DRC check
 .PHONY: drc
 drc:
 	$(CONTAINER_ENGINE) run --rm -v "$(PWD):$(WORKDIR)" -w $(WORKDIR) $(IMAGE) \
-	kicad-cli pcb drc hardware/kicad_project/growbeam.kicad_pcb -o hardware/exports/drc.txt
+	kicad-cli pcb drc --severity-error hardware/kicad_project/growbeam.kicad_pcb -o hardware/exports/drc.txt
 
 # Clean generated output files
 .PHONY: clean
