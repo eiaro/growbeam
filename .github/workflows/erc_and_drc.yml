@@ -22,13 +22,50 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Run DRC and ERC checks with GHCR image
+      - name: Run ERC and DRC checks with GHCR image
+        id: run_checks
         run: |
+          mkdir -p reports
           docker run --rm \
             -v "${{ github.workspace }}:/workspace" \
             -w /workspace \
             ghcr.io/${{ github.repository_owner }}/kicad9-ci:latest \
             bash -c "
-              kicad-cli sch erc hardware/kicad_project/*.kicad_sch &&
-              kicad-cli pcb drc hardware/kicad_project/*.kicad_pcb
+              kicad-cli sch erc hardware/kicad_project/*.kicad_sch > reports/erc.txt 2>&1 || echo '[!] ERC reported issues'
+              kicad-cli pcb drc hardware/kicad_project/*.kicad_pcb > reports/drc.txt 2>&1 || echo '[!] DRC reported issues'
             "
+          echo '::set-output name=erc::'$(grep -c . reports/erc.txt)
+          echo '::set-output name=drc::'$(grep -c . reports/drc.txt)
+
+      - name: Upload DRC/ERC results as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: kicad-checks
+          path: reports/
+
+      - name: Comment on Pull Request
+        if: github.event_name == 'pull_request'
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            ## 🔍 KiCad Validation Results
+
+            ### 🧪 ERC Report:
+            ```
+            ${{ steps.run_checks.outputs.erc }}
+            ```
+            [Download full ERC log](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+
+            ### 🧪 DRC Report:
+            ```
+            ${{ steps.run_checks.outputs.drc }}
+            ```
+            [Download full DRC log](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+
+      - name: Fail if ERC/DRC has issues
+        if: steps.run_checks.outputs.erc != '0' || steps.run_checks.outputs.drc != '0'
+        run: |
+          echo "ERC or DRC checks reported issues."
+          exit 1
