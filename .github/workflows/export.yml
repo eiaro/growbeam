@@ -1,4 +1,4 @@
-name: Export KiCad Files and Run Checks
+name: Export generated KiCad Files
 
 on:
   pull_request:
@@ -35,7 +35,7 @@ jobs:
               kicad-cli sch export pdf /workspace/hardware/kicad_project/*.kicad_sch -o /workspace/hardware/exports/schematic.pdf &&
               kicad-cli pcb export gerbers /workspace/hardware/kicad_project/*.kicad_pcb -o /workspace/hardware/exports/gerbers &&              
               kicad-cli pcb export step /workspace/hardware/kicad_project/*.kicad_pcb -o /workspace/hardware/exports/growbeam.step &&
-              kicad-cli pcb export vrlm /workspace/hardware/kicad_project/*.kicad_pcb -o /workspace/hardware/exports/growbeam.wrl &&
+              kicad-cli pcb export vrml /workspace/hardware/kicad_project/*.kicad_pcb -o /workspace/hardware/exports/growbeam.wrl &&
               blender -b --python render/blender_render.py
             "      
 
