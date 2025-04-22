@@ -1,0 +1,30 @@
+site_name: GrowBeam
+theme:
+  name: material
+  features:
+    - navigation.instant
+    - navigation.sections
+    - navigation.top
+    - content.code.annotate
+    - content.tabs.link
+markdown_extensions:
+  - admonition
+  - pymdownx.superfences
+  - pymdownx.details
+  - pymdownx.inlinehilite
+  - pymdownx.arithmatex:
+      generic: true
+extra_javascript:
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+nav:
+  - Home: index.md
+  - Getting Started: getting-started.md
+  - Background: background.md
+  - Components: 
+    - Research: components/index.md
+    - Mechanical: components/mechanical.md
+    - Light Sources: components/light-sources.md
+    - Conclusion: components/conclusion.md
+  - Design: 
+    - Schematic: design/schematic.md
