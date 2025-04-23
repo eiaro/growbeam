@@ -7,14 +7,11 @@ ENV DEBIAN_FRONTEND=noninteractive
 # Install base packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
     software-properties-common lsb-release xz-utils \
-    wget curl gnupg2 git make python3-full python3-pip \
+    wget curl gnupg2 git make python3-full python3-pandas python3-pip \
     libgl1-mesa-dev libegl-mesa0 libglu1-mesa xvfb ca-certificates \
     unzip zip \
     inkscape \
     && rm -rf /var/lib/apt/lists/*
-
-# Python reqs
-RUN pip3 install pandas
 
 # Install KiCad 9.0 (via PPA)
 RUN add-apt-repository -y ppa:kicad/kicad-9.0-releases && \
