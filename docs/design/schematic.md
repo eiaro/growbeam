@@ -9,7 +9,7 @@ This section provides an overview of the schematic design for a single GrowBeam 
 
 ## 📐 Schematic Overview
 
-![Schematic](https://raw.githubusercontent.com/eiaro/growbeam/master/hardware/exports/schematic.svg)
+![Schematic](../assets/schematic.svg)
 
 The full schematic is also available as an [PDF file](https://github.com/eiaro/growbeam/blob/main/hardware/exports/schematic.pdf).
 
