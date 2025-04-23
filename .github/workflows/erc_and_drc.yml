@@ -38,16 +38,19 @@ jobs:
             "          
 
       - name: Display ERC and DRC results in PR comment
+        if: github.event_name != 'workflow_dispatch'
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           path: reports/erc.txt
 
       - name: Append DRC results
+        if: github.event_name != 'workflow_dispatch'
         run: |
           echo '---' >> reports/erc.txt
           cat reports/drc.txt >> reports/erc.txt
 
       - name: Re-post full report in PR
+        if: github.event_name != 'workflow_dispatch'
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           path: reports/erc.txt
