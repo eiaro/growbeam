@@ -1,4 +1,5 @@
 site_name: GrowBeam
+site_url: https://eiaro.github.io/growbeam/
 theme:
   name: material
   features:
