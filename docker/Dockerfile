@@ -13,6 +13,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     inkscape \
     && rm -rf /var/lib/apt/lists/*
 
+# Python reqs
+RUN pip3 install pandas
+
 # Install KiCad 9.0 (via PPA)
 RUN add-apt-repository -y ppa:kicad/kicad-9.0-releases && \
     apt-get update && \
