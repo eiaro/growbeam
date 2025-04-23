@@ -1,26 +1,37 @@
-# KiCad project files
+# -----------------------------------------------------------------------------
+# 🛠️ KiCad: Project cache, backups, and intermediate files
+# -----------------------------------------------------------------------------
 *.bak
 *.bck
 *.tmp
-*.kicad_prl
-*.kicad_sch-bak
-*.kicad_pcb-bak
+*.log
 *.dcm
 *.net
 *.xml
 *.cache
-*.log
+*.pos
+*.csv
+
+# Autosave & backups
+_autosave/
+hardware/kicad_project/#auto_saved_files#
+*.kicad_prl
+*.kicad_sch-bak
+*.kicad_pcb-bak
+
+# KiCad project-specific
 fp-info-cache
 fp-lib-table
+hardware/kicad_project/fabrication-toolkit-options.json
 
-# Hugo ignores
-docs/public
-**/exampleSite/
+# -----------------------------------------------------------------------------
+# 📤 KiCad: Generated fabrication outputs (ignored – regenerate with Make)
+# -----------------------------------------------------------------------------
+hardware/exports/
+hardware/kicad_project/production/
+hardware/kicad_project/bom/
 
-# Backup folders
-_autosave/
-
-# Gerber and fabrication outputs
+# Raw Gerber/Drill files from export (if outside exports/)
 *.gbr
 *.gtl
 *.gbl
@@ -30,18 +41,20 @@ _autosave/
 *.gbo
 *.drl
 *.zip
-*.pos
-*.csv
-hardware/kicad_project/#auto_saved_files#
-hardware/kicad_project/~growlight-module.kicad_sch.lck
-hardware/kicad_project/production
-hardware/kicad_project/bom
-hardware/kicad_project/fabrication-toolkit-options.json
 
-# PyCache
+# -----------------------------------------------------------------------------
+# 🐍 Python and virtual environments
+# -----------------------------------------------------------------------------
 **/__pycache__/
-hardware/exports/*
-
+*.pyc
 .venv/
+
+# -----------------------------------------------------------------------------
+# 🌐 MkDocs: built documentation site (rebuild with `make doc-build`)
+# -----------------------------------------------------------------------------
 site/
 
+# -----------------------------------------------------------------------------
+# 📦 Production ZIPs and renamed files (clean/pack with `make production`)
+# -----------------------------------------------------------------------------
+release/

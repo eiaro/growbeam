@@ -1,0 +1,26 @@
+name: Create Production Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🔨 Build production files
+        run: make production
+
+      - name: 🚀 Attach ZIP to GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: Release ${{ github.ref_name }}
+          tag_name: ${{ github.ref_name }}
+          files: release/GrowBeam-${{ github.ref_name }}-production.zip

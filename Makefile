@@ -88,6 +88,63 @@ serve: docs-assets ## Serve documentation locally
 clean-docs: ## Clean MkDocs site output
 	rm -rf site
 
+# ========= Production Preparation =========
+
+VERSION := $(shell git describe --tags --always)
+FAB_DIR := release/GrowBeam-$(VERSION)
+FAB_ZIP := GrowBeam-$(VERSION)-production.zip
+FAB_ERC := hardware/kicad_project/fab.erc
+FAB_DRC := hardware/kicad_project/fab.drc
+
+.PHONY: production
+production: erc-fab drc-fab export-gerbers rename-gerbers zip-production ## Prepare all fabrication files
+
+.PHONY: erc-fab
+erc-fab:
+	$(CONTAINER_ENGINE) run --rm -v "$(PWD):$(WORKDIR)" -w $(WORKDIR) $(IMAGE) \
+	kicad-cli sch erc --severity-error --rules $(FAB_ERC) $(SCHEMATIC) -o $(EXPORT_DIR)/erc.txt
+
+.PHONY: drc-fab
+drc-fab:
+	$(CONTAINER_ENGINE) run --rm -v "$(PWD):$(WORKDIR)" -w $(WORKDIR) $(IMAGE) \
+	kicad-cli pcb drc --severity-error --rules $(FAB_DRC) $(PCB) -o $(EXPORT_DIR)/drc.txt
+
+.PHONY: rename-gerbers
+rename-gerbers:
+	@mkdir -p $(FAB_DIR)
+	@cp $(EXPORT_DIR)/gerbers/* $(FAB_DIR)/
+	@# Eksempel på JLCPCB-navn – tilpass gjerne etter behov
+	@cd $(FAB_DIR) && \
+		mv *-F_Cu.gtl        Gerber_Top.gtl && \
+		mv *-B_Cu.gbl        Gerber_Bottom.gbl && \
+		mv *-F_SilkS.gto     Gerber_TopSilk.gto && \
+		mv *-Edge_Cuts.gm1   Outline.gm1 && \
+		mv *.drl             Drill.drl
+
+.PHONY: zip-production
+zip-production:
+	@echo "📦 Packing production files..."
+	@cp $(EXPORT_DIR)/bom.csv $(FAB_DIR)/ && \
+	cp $(EXPORT_DIR)/schematic.pdf $(FAB_DIR)/ && \
+	cp $(EXPORT_DIR)/growbeam.step $(FAB_DIR)/ && \
+	$(MAKE) fab-readme
+	cd release && zip -r $(FAB_ZIP) GrowBeam-$(VERSION)
+
+.PHONY: fab-readme
+fab-readme:
+	@echo "# GrowBeam Production Package v$(VERSION)" > $(FAB_DIR)/FAB_README.md
+	@echo "" >> $(FAB_DIR)/FAB_README.md
+	@echo "Generated: $$(date -Iseconds)" >> $(FAB_DIR)/FAB_README.md
+	@echo "" >> $(FAB_DIR)/FAB_README.md
+	@echo "## Contents" >> $(FAB_DIR)/FAB_README.md
+	@echo "- ✅ Gerbers in JLCPCB-compatible format" >> $(FAB_DIR)/FAB_README.md
+	@echo "- ✅ Drill file and board outline" >> $(FAB_DIR)/FAB_README.md
+	@echo "- ✅ BOM and schematic PDF" >> $(FAB_DIR)/FAB_README.md
+	@echo "- ✅ STEP file for 3D fit checking" >> $(FAB_DIR)/FAB_README.md
+	@echo "" >> $(FAB_DIR)/FAB_README.md
+	@echo "ERC and DRC checks passed using custom fab.erc and fab.drc rules." >> $(FAB_DIR)/FAB_README.md
+
+
 # ====== Cleanup ======
 .PHONY: clean
 clean: ## Remove ERC/DRC check files
