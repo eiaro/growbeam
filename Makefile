@@ -65,7 +65,7 @@ export-gerbers: ## Export Gerber files
 
 docs-assets: bom-md schematic ## Generate BOM + schematic for documentation
 
-bom-md: ## Convert BOM CSV to Markdown
+bom-md: export-bom ## Convert BOM CSV to Markdown
 	$(CONTAINER_ENGINE) run --rm -v "$(PWD):$(WORKDIR)" -w $(WORKDIR) $(IMAGE) \
 	python3 tools/generate_bom_md.py $(EXPORT_DIR)/bom.csv docs/_includes/bom.md
 
