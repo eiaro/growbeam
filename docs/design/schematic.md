@@ -17,7 +17,9 @@ The full schematic is also available as an [PDF file](https://github.com/eiaro/g
 
 ## 🧾 Bill of Materials (BOM)
 
---8<-- "hardware/bom.md"
+{% 
+    include-markdown '../_includes/bom.md' 
+%}
 
 ---
 

@@ -7,14 +7,20 @@ theme:
     - navigation.top
     - content.code.annotate
     - content.tabs.link
+
 markdown_extensions:
   - admonition
+  - pymdownx.snippets
   - pymdownx.superfences
   - pymdownx.details
   - pymdownx.inlinehilite
   - pymdownx.arithmatex:
-      generic: true
-  - pymdownx.snippets
+      generic: true  
+
+plugins:
+  - search
+  - include-markdown  
+  
 extra_javascript:
   - overrides/extra.js
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js

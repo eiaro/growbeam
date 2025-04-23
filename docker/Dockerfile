@@ -7,11 +7,25 @@ ENV DEBIAN_FRONTEND=noninteractive
 # Install base packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
     software-properties-common lsb-release xz-utils \
-    wget curl gnupg2 git make python3 python3-pip \
+    wget curl gnupg2 git make python3-venv \
     libgl1-mesa-dev libegl-mesa0 libglu1-mesa xvfb ca-certificates \
     unzip zip \
     inkscape \
     && rm -rf /var/lib/apt/lists/*
+
+# --- VENV & Python avinstallasjoner ---
+ENV VENV_PATH=/venv
+RUN python3 -m venv $VENV_PATH
+ENV PATH="$VENV_PATH/bin:$PATH"
+
+# --- Installer Pythonverktøy ---
+RUN pip install --upgrade pip
+RUN pip install --no-cache-dir \
+    mkdocs-material \
+    pymdown-extensions \
+    mkdocs-include-markdown-plugin \
+    pandas \
+    tabulate
 
 # Install KiCad 9.0 (via PPA)
 RUN add-apt-repository -y ppa:kicad/kicad-9.0-releases && \
@@ -47,4 +61,3 @@ RUN blender --online-mode -b --command extension install --enable web3d_x3d_vrml
 
 # Set working directory
 WORKDIR /workspace
-

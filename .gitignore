@@ -42,3 +42,6 @@ hardware/kicad_project/fabrication-toolkit-options.json
 **/__pycache__/
 hardware/exports/*
 
+.venv/
+site/
+
