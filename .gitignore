@@ -40,5 +40,5 @@ hardware/kicad_project/fabrication-toolkit-options.json
 
 # PyCache
 **/__pycache__/
-hardware/exports/
+hardware/exports/*
 

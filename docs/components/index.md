@@ -2,11 +2,6 @@
 title: "Components"
 ---
 
-## Table of Contents
-
-1. [Mechanical](mechanical.md)
-2. [LEDs](leds.md)
-
 Over the past few years, the global shift away from metal halide (MH) and compact fluorescent (CFL) lighting has opened the door to a wide range of modern horticulture lighting options. As part of this project, several alternatives have been evaluated for suitability in a modular LED-based grow light system.
 
 Starting with common LED strips, it was hard to source strips with the power needed for the project to succeed. This was rather quickly eliminated as an option. Then there are many premade boards similar to our own project, but either they are hard to source or they have wrong type of LEDs - making a good light and a grow light isn't the same.

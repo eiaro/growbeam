@@ -22,7 +22,7 @@ Check the [Getting Started](getting-started.md) section to set up the hardware o
 
 ## 📚 Structure
 
-- **[Background & Motivation](/chapter2)** — Why this project exists
+- **[Background & Motivation](background.md)** — Why this project exists
 - **[Components](components/index.md)** — LED types, power delivery, mechanical parts
 - **[Design](design/index.md)** — What we chose and why
 - **[Schematic](design/schematic.md)** — Circuit overview and BOM

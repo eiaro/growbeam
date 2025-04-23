@@ -17,11 +17,7 @@ The full schematic is also available as an [PDF file](https://github.com/eiaro/g
 
 ## 🧾 Bill of Materials (BOM)
 
-The full bill of materials is included as a CSV file:
-
-📄 `hardware/exports/bom.csv`
-
-This file lists all LEDs, resistors, and other components used in each module.
+--8<-- "hardware/bom.md"
 
 ---
 

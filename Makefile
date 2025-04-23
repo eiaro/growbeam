@@ -40,6 +40,11 @@ schematic:
 		python3 tools/optimize_svgs.py hardware/exports/schematic_raw/growbeam.svg docs/assets/schematic.svg && \
 		rm -rf hardware/exports/schematic_raw"
 
+.PHONY: bom-md
+bom-md:
+	$(CONTAINER_ENGINE) run --rm -v "$(PWD):$(WORKDIR)" -w $(WORKDIR) $(IMAGE) bash -c "\
+		python3 tools/generate_bom_md.py hardware/exports/bom.csv docs/design/bom.md"
+
 # Clean generated output files
 .PHONY: clean
 clean:
