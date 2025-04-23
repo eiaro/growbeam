@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     wget curl gnupg2 git make python3 python3-pip \
     libgl1-mesa-dev libegl-mesa0 libglu1-mesa xvfb ca-certificates \
     unzip zip \
+    inkscape \
     && rm -rf /var/lib/apt/lists/*
 
 # Install KiCad 9.0 (via PPA)
@@ -43,7 +44,6 @@ RUN wget https://github.com/30350n/pcb2blender/archive/refs/heads/master.zip -O 
 RUN blender --online-mode -b --command extension sync
 RUN blender --online-mode -b --command extension install --enable pcb3d_importer
 RUN blender --online-mode -b --command extension install --enable web3d_x3d_vrml2_format
-
 
 # Set working directory
 WORKDIR /workspace
