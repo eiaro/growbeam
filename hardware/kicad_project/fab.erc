@@ -1,0 +1,11 @@
+(rule "Unconnected power input"
+    (condition "pin_is_power_in && not pin_connected")
+    (severity warning)
+    (comment "Allow unconnected power inputs, if intentional")
+)
+
+(rule "Unconnected outputs"
+    (condition "pin_is_output && not pin_connected")
+    (severity error)
+    (comment "Outputs must be driven or terminated")
+)
