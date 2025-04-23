@@ -32,17 +32,8 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Run ERC, DRC, and export
-        run: |
-          docker run --rm -v ${{ github.workspace }}:/workspace -w /workspace ghcr.io/${{ github.repository_owner }}/kicad9-ci:latest bash -c "
-              mkdir -p /workspace/hardware/exports &&              
-              kicad-cli sch export bom /workspace/hardware/kicad_project/*.kicad_sch -o /workspace/hardware/bom.csv &&
-              kicad-cli sch export pdf /workspace/hardware/kicad_project/*.kicad_sch -o /workspace/hardware/exports/schematic.pdf &&
-              kicad-cli pcb export gerbers /workspace/hardware/kicad_project/*.kicad_pcb -o /workspace/hardware/exports/gerbers &&              
-              kicad-cli pcb export step /workspace/hardware/kicad_project/*.kicad_pcb -o /workspace/hardware/exports/growbeam.step &&
-              kicad-cli pcb export vrml /workspace/hardware/kicad_project/*.kicad_pcb -o /workspace/hardware/exports/growbeam.wrl &&
-              blender -b --python render/blender_render.py
-            "      
+      - name: Export KiCad files
+        run: make export
 
       - name: Force Add Generated Files
         run: |
