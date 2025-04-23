@@ -9,7 +9,7 @@ This section provides an overview of the schematic design for a single GrowBeam 
 
 ## 📐 Schematic Overview
 
-![Schematic](https://raw.githubusercontent.com/eiaro/growbeam/master/hardware/exports/schematic.svg)
+![Schematic](../assets/schematic.svg)
 
 The full schematic is also available as an [PDF file](https://github.com/eiaro/growbeam/blob/main/hardware/exports/schematic.pdf).
 
@@ -17,11 +17,9 @@ The full schematic is also available as an [PDF file](https://github.com/eiaro/g
 
 ## 🧾 Bill of Materials (BOM)
 
-The full bill of materials is included as a CSV file:
-
-📄 `hardware/exports/bom.csv`
-
-This file lists all LEDs, resistors, and other components used in each module.
+{% 
+    include-markdown '../_includes/bom.md' 
+%}
 
 ---
 

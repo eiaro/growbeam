@@ -16,16 +16,16 @@ GrowBeam is an open hardware project focused on building **modular, efficient, a
 
 ## 🚀 Getting Started
 
-Check the [Getting Started](/chapter1) section to set up the hardware or explore the system design under [Components & Technologies](/chapter4).
+Check the [Getting Started](getting-started.md) section to set up the hardware or explore the system design under [Components](components/index.md).
 
 ---
 
 ## 📚 Structure
 
-- **[Background & Motivation](/chapter2)** — Why this project exists
-- **[Components](/chapter3)** — LED types, power delivery, mechanical parts
-- **[Design & Decisions](/chapter4)** — What we chose and why
-- **[Schematic](/chapter4/schematic)** — Circuit overview and BOM
+- **[Background & Motivation](background.md)** — Why this project exists
+- **[Components](components/index.md)** — LED types, power delivery, mechanical parts
+- **[Design](design/index.md)** — What we chose and why
+- **[Schematic](design/schematic.md)** — Circuit overview and BOM
 - **[Results & Future](/chapter5)** — Performance, learnings, and roadmap
 
 ---
