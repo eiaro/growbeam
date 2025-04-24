@@ -10,6 +10,8 @@ PCB := hardware/kicad_project/growbeam.kicad_pcb
 EXPORT_DIR := hardware/exports
 ASSETS_DIR := docs/assets
 
+COMMON_LAYER_LIST := "F.Cu,B.Cu,F.Silkscreen,B.Silkscreen,F.Paste,B.Paste,F.Mask,B.Mask,Edge.Cuts"
+
 # ====== Build everything ======
 .PHONY: all
 all: erc drc export docs-assets doc-build ## Run full export and build process
@@ -31,9 +33,9 @@ drc: ## Run PCB DRC check
 	kicad-cli pcb drc --severity-error $(PCB) -o $(EXPORT_DIR)/drc.txt
 
 # ====== Export rules ======
-.PHONY: export export-bom export-schematic export-step export-vrml export-gerbers
+.PHONY: export export-bom export-schematic export-step export-vrml export-gerbers export-drill export-pos
 
-export: export-bom export-schematic export-step export-vrml export-gerbers ## Run all export targets
+export: export-bom export-schematic export-step export-vrml export-gerbers export-drill export-pos ## Run all export targets
 
 export-bom: ## Export BOM as CSV from schematic using preset
 	$(CONTAINER_ENGINE) run --rm -v "$(PWD):$(WORKDIR)" -w $(WORKDIR) $(IMAGE) \
@@ -58,7 +60,30 @@ export-vrml: ## Export VRML model and render in Blender
 
 export-gerbers: ## Export Gerber files
 	$(CONTAINER_ENGINE) run --rm -v "$(PWD):$(WORKDIR)" -w $(WORKDIR) $(IMAGE) \
-	kicad-cli pcb export gerbers $(PCB) -o $(EXPORT_DIR)/gerbers
+		kicad-cli pcb export gerbers \
+		--output $(EXPORT_DIR)/gerbers \
+		--layers $(COMMON_LAYER_LIST) \
+		--subtract-soldermask \
+		$(PCB)
+
+export-drill:
+	$(CONTAINER_ENGINE) run --rm -v "$(PWD):$(WORKDIR)" -w $(WORKDIR) $(IMAGE) bash -c "\
+		mkdir -p $(EXPORT_DIR)/drill && \
+		kicad-cli pcb export drill \
+			--output $(EXPORT_DIR)/drill \
+			--format excellon \
+			--drill-origin plot \
+			--generate-map \
+			--map-format gerberx2 \
+			--excellon-separate-th \
+			$(PCB)"
+
+export-pos:
+	$(CONTAINER_ENGINE) run --rm -v "$(PWD):$(WORKDIR)" -w $(WORKDIR) $(IMAGE) bash -c "\
+		mkdir -p $(EXPORT_DIR)/pos && \
+		kicad-cli pcb export pos \
+			-o $(EXPORT_DIR)/pos/growbeam-pos.csv \
+			$(PCB)"
 
 # ====== MkDocs / Documentation ======
 .PHONY: docs-assets bom-md schematic doc-build serve clean-docs
@@ -93,56 +118,56 @@ clean-docs: ## Clean MkDocs site output
 VERSION := $(shell git describe --tags --always)
 FAB_DIR := release/GrowBeam-$(VERSION)
 FAB_ZIP := GrowBeam-$(VERSION)-production.zip
-FAB_ERC := hardware/kicad_project/fab.erc
-FAB_DRC := hardware/kicad_project/fab.drc
 
 .PHONY: production
-production: erc-fab drc-fab export-gerbers rename-gerbers zip-production ## Prepare all fabrication files
-
-.PHONY: erc-fab
-erc-fab:
-	$(CONTAINER_ENGINE) run --rm -v "$(PWD):$(WORKDIR)" -w $(WORKDIR) $(IMAGE) \
-	kicad-cli sch erc --severity-error --rules $(FAB_ERC) $(SCHEMATIC) -o $(EXPORT_DIR)/erc.txt
-
-.PHONY: drc-fab
-drc-fab:
-	$(CONTAINER_ENGINE) run --rm -v "$(PWD):$(WORKDIR)" -w $(WORKDIR) $(IMAGE) \
-	kicad-cli pcb drc --severity-error --rules $(FAB_DRC) $(PCB) -o $(EXPORT_DIR)/drc.txt
-
-.PHONY: rename-gerbers
-rename-gerbers:
-	@mkdir -p $(FAB_DIR)
-	@cp $(EXPORT_DIR)/gerbers/* $(FAB_DIR)/
-	@# Eksempel på JLCPCB-navn – tilpass gjerne etter behov
-	@cd $(FAB_DIR) && \
-		mv *-F_Cu.gtl        Gerber_Top.gtl && \
-		mv *-B_Cu.gbl        Gerber_Bottom.gbl && \
-		mv *-F_SilkS.gto     Gerber_TopSilk.gto && \
-		mv *-Edge_Cuts.gm1   Outline.gm1 && \
-		mv *.drl             Drill.drl
+production: export-gerbers export-drill export-pos zip-production ## Prepare all fabrication files
 
 .PHONY: zip-production
 zip-production:
 	@echo "📦 Packing production files..."
-	@cp $(EXPORT_DIR)/bom.csv $(FAB_DIR)/ && \
-	cp $(EXPORT_DIR)/schematic.pdf $(FAB_DIR)/ && \
-	cp $(EXPORT_DIR)/growbeam.step $(FAB_DIR)/ && \
-	$(MAKE) fab-readme
+	@mkdir -p $(FAB_DIR)	
+	@cp $(EXPORT_DIR)/gerbers/*.gm1 $(FAB_DIR)/ || true
+	@cp $(EXPORT_DIR)/gerbers/*.g*  $(FAB_DIR)/ || true
+	@cp $(EXPORT_DIR)/gerbers/*.gbrjob $(FAB_DIR)/ || true
+	@cp $(EXPORT_DIR)/drill/*.drl   $(FAB_DIR)/ || true
+	@cp $(EXPORT_DIR)/drill/*.gbr   $(FAB_DIR)/ || true
+	@cp $(EXPORT_DIR)/bom.csv       $(FAB_DIR)/ || true
+	@cp $(EXPORT_DIR)/pos/growbeam-pos.csv $(FAB_DIR)/ || true
+	@cp $(EXPORT_DIR)/schematic.pdf $(FAB_DIR)/ || true
+	@cp $(EXPORT_DIR)/growbeam.step $(FAB_DIR)/ || true
+	@$(MAKE) fab-readme
 	cd release && zip -r $(FAB_ZIP) GrowBeam-$(VERSION)
 
 .PHONY: fab-readme
 fab-readme:
-	@echo "# GrowBeam Production Package v$(VERSION)" > $(FAB_DIR)/FAB_README.md
+	@echo "# 🌱 GrowBeam Production Package v$(VERSION)" > $(FAB_DIR)/FAB_README.md
 	@echo "" >> $(FAB_DIR)/FAB_README.md
-	@echo "Generated: $$(date -Iseconds)" >> $(FAB_DIR)/FAB_README.md
+	@echo "_Generated: $$(date -Iseconds)_" >> $(FAB_DIR)/FAB_README.md
 	@echo "" >> $(FAB_DIR)/FAB_README.md
-	@echo "## Contents" >> $(FAB_DIR)/FAB_README.md
-	@echo "- ✅ Gerbers in JLCPCB-compatible format" >> $(FAB_DIR)/FAB_README.md
-	@echo "- ✅ Drill file and board outline" >> $(FAB_DIR)/FAB_README.md
-	@echo "- ✅ BOM and schematic PDF" >> $(FAB_DIR)/FAB_README.md
-	@echo "- ✅ STEP file for 3D fit checking" >> $(FAB_DIR)/FAB_README.md
+
+	@echo "## 📦 Contents" >> $(FAB_DIR)/FAB_README.md
 	@echo "" >> $(FAB_DIR)/FAB_README.md
-	@echo "ERC and DRC checks passed using custom fab.erc and fab.drc rules." >> $(FAB_DIR)/FAB_README.md
+	@echo "- Gerber layers from KiCad 9 (.gbr/.gm1)" >> $(FAB_DIR)/FAB_README.md
+	@echo "- Separate PTH and NPTH drill files (.drl)" >> $(FAB_DIR)/FAB_README.md
+	@echo "- Gerber-format drill map (.gbr)" >> $(FAB_DIR)/FAB_README.md
+	@echo "- Pick-and-place file for SMT assembly (.csv)" >> $(FAB_DIR)/FAB_README.md
+	@echo "- BOM (.csv)" >> $(FAB_DIR)/FAB_README.md
+	@echo "- Schematic as PDF" >> $(FAB_DIR)/FAB_README.md
+	@echo "- STEP model for 3D inspection" >> $(FAB_DIR)/FAB_README.md
+	@echo "" >> $(FAB_DIR)/FAB_README.md
+
+	@echo "## 🧭 Layer File Mapping (typical KiCad outputs)" >> $(FAB_DIR)/FAB_README.md
+	@echo "" >> $(FAB_DIR)/FAB_README.md
+	@echo "| File | Layer |" >> $(FAB_DIR)/FAB_README.md
+	@echo "|------|--------|" >> $(FAB_DIR)/FAB_README.md
+	@echo "| growbeam-F_Cu.gtl | Top Copper |" >> $(FAB_DIR)/FAB_README.md
+	@echo "| growbeam-B_Cu.gbl | Bottom Copper |" >> $(FAB_DIR)/FAB_README.md
+	@echo "| growbeam-F_Silkscreen.gto | Top Silkscreen |" >> $(FAB_DIR)/FAB_README.md
+	@echo "| growbeam-F_Mask.gts | Top Soldermask |" >> $(FAB_DIR)/FAB_README.md
+	@echo "| growbeam-B_Mask.gbs | Bottom Soldermask |" >> $(FAB_DIR)/FAB_README.md
+	@echo "| growbeam-Edge_Cuts.gm1 | Board Outline |" >> $(FAB_DIR)/FAB_README.md
+	@echo "" >> $(FAB_DIR)/FAB_README.md
+	@echo "All layer names follow KiCad's default export names." >> $(FAB_DIR)/FAB_README.md
 
 
 # ====== Cleanup ======

@@ -15,6 +15,9 @@ jobs:
       - name: 📥 Checkout
         uses: actions/checkout@v4
 
+      - name: 🐳 Build container (if needed)
+        run: make build-image
+
       - name: 🔨 Build production files
         run: make production
 
@@ -23,4 +26,4 @@ jobs:
         with:
           name: Release ${{ github.ref_name }}
           tag_name: ${{ github.ref_name }}
-          files: release/GrowBeam-${{ github.ref_name }}-production.zip
+          files: release/GrowBeam-${{ github.ref_name }}*-production.zip

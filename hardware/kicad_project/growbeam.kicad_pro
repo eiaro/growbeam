@@ -263,16 +263,7 @@
     "equivalence_files": []
   },
   "erc": {
-    "erc_exclusions": [
-      [
-        "power_pin_not_driven|1460500|850900|da7ec96b-dd72-403b-88cd-77cd387178b6|00000000-0000-0000-0000-000000000000|/f1e71b30-7298-4b81-b58f-ffc29b732545|/f1e71b30-7298-4b81-b58f-ffc29b732545|",
-        "Terminal not on schematic"
-      ],
-      [
-        "power_pin_not_driven|508000|381000|224c4c4c-bacf-4c90-aecb-325ab91594e7|00000000-0000-0000-0000-000000000000|/f1e71b30-7298-4b81-b58f-ffc29b732545|/f1e71b30-7298-4b81-b58f-ffc29b732545|",
-        "Terminal not on schematic"
-      ]
-    ],
+    "erc_exclusions": [],
     "meta": {
       "version": 0
     },
@@ -550,7 +541,7 @@
       "gencad": "",
       "idf": "",
       "netlist": "",
-      "plot": "",
+      "plot": "../exports/gerbers",
       "pos_files": "",
       "specctra_dsn": "",
       "step": "",
