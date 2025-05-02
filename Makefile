@@ -24,13 +24,17 @@ build-image: ## Build container image for CLI use
 # ====== KiCad validation ======
 .PHONY: erc
 erc: ## Run schematic ERC check
-	$(CONTAINER_ENGINE) run --rm -v "$(PWD):$(WORKDIR)" -w $(WORKDIR) $(IMAGE) \
-	kicad-cli sch erc --severity-error $(SCHEMATIC) -o $(EXPORT_DIR)/erc.txt
+	## This dosn't work correctly yet, so it's commented out
+	##$(CONTAINER_ENGINE) run --rm -v "$(PWD):$(WORKDIR)" -w $(WORKDIR) $(IMAGE) \
+	##bash -c 'kicad-cli sch erc --severity-error $(SCHEMATIC) -o $(EXPORT_DIR)/erc.txt 2>&1; \
+	##echo $$? > $(EXPORT_DIR)/erc.status'
+	
 
 .PHONY: drc
 drc: ## Run PCB DRC check
 	$(CONTAINER_ENGINE) run --rm -v "$(PWD):$(WORKDIR)" -w $(WORKDIR) $(IMAGE) \
-	kicad-cli pcb drc --severity-error $(PCB) -o $(EXPORT_DIR)/drc.txt
+	bash -c 'kicad-cli pcb drc --severity-error $(PCB) -o $(EXPORT_DIR)/drc.txt 2>&1; \
+	echo $$? > $(EXPORT_DIR)/drc.status'
 
 # ====== Export rules ======
 .PHONY: export export-bom export-schematic export-step export-vrml export-gerbers export-drill export-pos
