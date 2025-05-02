@@ -103,7 +103,7 @@ schematic: ## Export and optimize SVG schematic
 	$(CONTAINER_ENGINE) run --rm -v "$(PWD):$(WORKDIR)" -w $(WORKDIR) $(IMAGE) bash -c "\
 		rm -rf $(EXPORT_DIR)/schematic_raw && \
 		kicad-cli sch export svg -n -e $(SCHEMATIC) -o $(EXPORT_DIR)/schematic_raw && \
-		python3 tools/optimize_svgs.py $(EXPORT_DIR)/schematic_raw/growbeam.svg $(ASSETS_DIR)/schematic.svg && \
+		python3 tools/optimize_svgs.py $(EXPORT_DIR)/schematic_raw/GB-v2-87L.svg $(ASSETS_DIR)/schematic.svg && \
 		rm -rf $(EXPORT_DIR)/schematic_raw"
 
 doc-build: docs-assets ## Build MkDocs site
