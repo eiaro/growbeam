@@ -28,12 +28,6 @@ extra_javascript:
 
 nav:
   - Home: index.md
-  - Getting Started: getting-started.md
-  - Background: background.md
-  - Components: 
-    - Research: components/index.md
-    - Mechanical: components/mechanical.md
-    - Light Sources: components/light-sources.md
-    - Conclusion: components/conclusion.md
-  - Design: 
-    - Schematic: design/schematic.md
+  - Electrical Design: electrical.md
+  - Mechanical Design: mechanical.md
+  - Production: production.md
