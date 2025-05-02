@@ -5,8 +5,8 @@ IMAGE := ghcr.io/eiaro/kicad9-ci:latest
 WORKDIR := /workspace
 
 # Paths
-SCHEMATIC := hardware/kicad_project/growbeam.kicad_sch
-PCB := hardware/kicad_project/growbeam.kicad_pcb
+SCHEMATIC := hardware/GB-v2-87L/GB-v2-87L.kicad_sch
+PCB := hardware/GB-v2-87L/GB-v2-87L.kicad_pcb
 EXPORT_DIR := hardware/exports
 ASSETS_DIR := docs/assets
 
