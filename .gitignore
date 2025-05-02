@@ -11,6 +11,7 @@
 *.cache
 *.pos
 *.csv
+fp-info-cache
 
 # Autosave & backups
 _autosave/
@@ -19,17 +20,13 @@ hardware/kicad_project/#auto_saved_files#
 *.kicad_sch-bak
 *.kicad_pcb-bak
 
-# KiCad project-specific
-fp-info-cache
-fp-lib-table
-hardware/kicad_project/fabrication-toolkit-options.json
+
 
 # -----------------------------------------------------------------------------
 # 📤 KiCad: Generated fabrication outputs (ignored – regenerate with Make)
 # -----------------------------------------------------------------------------
 hardware/exports/
-hardware/kicad_project/production/
-hardware/kicad_project/bom/
+
 
 # Raw Gerber/Drill files from export (if outside exports/)
 *.gbr

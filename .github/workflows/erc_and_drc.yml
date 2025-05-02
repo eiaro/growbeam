@@ -25,40 +25,32 @@ jobs:
       - name: Run ERC and DRC checks with GHCR image
         id: run_checks
         run: |
-          mkdir -p reports
-          docker run --rm \
-            -v "${{ github.workspace }}:/workspace" \
-            -w /workspace \
-            ghcr.io/${{ github.repository_owner }}/kicad9-ci:latest \
-            bash -c "
-              kicad-cli sch erc --severity-error hardware/kicad_project/*.kicad_sch > reports/erc.txt 2>&1 
-              echo \$? > reports/erc_status.txt
-              kicad-cli pcb drc --severity-error hardware/kicad_project/*.kicad_pcb > reports/drc.txt 2>&1
-              echo \$? > reports/drc_status.txt
-            "          
+          make erc
+          make drc         
 
       - name: Display ERC and DRC results in PR comment
         if: github.event_name != 'workflow_dispatch'
         uses: marocchino/sticky-pull-request-comment@v2
         with:
-          path: reports/erc.txt
+          path: hardware/exports/erc.txt
 
       - name: Append DRC results
         if: github.event_name != 'workflow_dispatch'
         run: |
-          echo '---' >> reports/erc.txt
-          cat reports/drc.txt >> reports/erc.txt
+          echo hardware/exports/erc.txt > hardware/exports/ci.txt
+          echo '---' >> hardware/exports/ci.txt
+          cat hardware/exports/drc.txt >> hardware/exports/ci.txt
 
       - name: Re-post full report in PR
         if: github.event_name != 'workflow_dispatch'
         uses: marocchino/sticky-pull-request-comment@v2
         with:
-          path: reports/erc.txt
+          path: hardware/exports/ci.txt
 
       - name: Fail if ERC/DRC has issues
         run: |
-          ERC_CODE=$(cat reports/erc_status.txt)
-          DRC_CODE=$(cat reports/drc_status.txt)
+          ERC_CODE=$(cat hardware/exports/erc_status.txt)
+          DRC_CODE=$(cat hardware/exports/drc_status.txt)
           if [ "$ERC_CODE" != "0" ] || [ "$DRC_CODE" != "0" ]; then
             echo "❌ ERC or DRC check failed."
             exit 1

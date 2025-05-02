@@ -1,0 +1,191 @@
+(footprint "LED_LM301H_1212"
+	(version 20241229)
+	(generator "pcbnew")
+	(generator_version "9.0")
+	(layer "F.Cu")
+	(property "Reference" "REF**"
+		(at 0 -3 0)
+		(unlocked yes)
+		(layer "F.SilkS")
+		(uuid "01da4fb8-ebb3-4ac1-a1a3-76067a6f1588")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+		)
+	)
+	(property "Value" "LED_LM301H_1212"
+		(at 0 2.8 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(uuid "be35f5aa-2258-415e-bcc6-8f20cd716c58")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 90)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "0c9fc0bc-b1d3-45ff-9cf6-cce98804b4ec")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" ""
+		(at 0 0 90)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "7e86aeb4-dbdc-4736-bb87-3bb34f16c045")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(attr smd)
+	(fp_line
+		(start -1.5 -1.95)
+		(end 1.7 -1.95)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "1134132e-1435-4a31-ba7e-fcd3f0df08f1")
+	)
+	(fp_line
+		(start 1.7 -1.95)
+		(end 1.7 1.95)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "af6bdba3-749c-41b2-9f1e-e655f39914e1")
+	)
+	(fp_line
+		(start 1.7 1.95)
+		(end -1.5 1.95)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "94c1e218-fb59-447c-80fd-04be99d2319d")
+	)
+	(fp_rect
+		(start -1.65 -2)
+		(end 1.65 2)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.CrtYd")
+		(uuid "199b22fa-6c24-4bc9-9d70-1bee8d4735a2")
+	)
+	(fp_line
+		(start -1 -1.5)
+		(end -1.5 -1)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "d865c6bf-ce20-485c-a5b1-65ba7fa93bf2")
+	)
+	(fp_rect
+		(start -1.5 -1.5)
+		(end 1.5 1.5)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.Fab")
+		(uuid "696c86a1-b1d6-4867-a2c3-fe10d8a62932")
+	)
+	(fp_text user "${REFERENCE}"
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(uuid "f9fc8986-e435-4467-bb33-f6a37ee654f9")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(pad "1" smd custom
+		(at -0.775 0 90)
+		(size 1 1)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(options
+			(clearance outline)
+			(anchor circle)
+		)
+		(primitives
+			(gr_rect
+				(start -1.75 -0.625)
+				(end 1.75 -0.075)
+				(width 0.001)
+				(fill yes)
+			)
+			(gr_rect
+				(start -1.4 -0.075)
+				(end 1.4 0.625)
+				(width 0.001)
+				(fill yes)
+			)
+		)
+		(uuid "113cf012-357b-402f-aec6-0155875d3f2b")
+	)
+	(pad "2" smd custom
+		(at 0.775 0 270)
+		(size 1 1)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(options
+			(clearance outline)
+			(anchor circle)
+		)
+		(primitives
+			(gr_rect
+				(start -1.75 -0.625)
+				(end 1.75 -0.075)
+				(width 0.001)
+				(fill yes)
+			)
+			(gr_rect
+				(start -1.4 -0.075)
+				(end 1.4 0.625)
+				(width 0.001)
+				(fill yes)
+			)
+		)
+		(uuid "3339dd08-9b94-487f-8b69-e2996533ae1a")
+	)
+	(embedded_fonts no)
+	(model "${KIPRJMOD}/3dmodels/LM301H.stp"
+		(offset
+			(xyz 0 0 0)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz -0 -0 90)
+		)
+	)
+)

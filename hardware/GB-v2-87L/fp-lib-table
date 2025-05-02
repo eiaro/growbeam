@@ -1,0 +1,7 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "LED_LM301H")(type "KiCad")(uri "${KIPRJMOD}/footprints/LED_LM301H.pretty")(options "")(descr ""))
+  (lib (name "LED_LUMILEDS")(type "KiCad")(uri "${KIPRJMOD}/footprints/LED_LUMILEDS.pretty")(options "")(descr ""))
+  (lib (name "TerminalBlock_TE")(type "KiCad")(uri "${KIPRJMOD}/footprints/TerminalBlock_TE.pretty")(options "")(descr ""))
+  (lib (name "TerminalBlock_WAGO")(type "KiCad")(uri "${KIPRJMOD}/footprints/TerminalBlock_WAGO.pretty")(options "")(descr ""))
+)
