@@ -11,7 +11,7 @@
 *.cache
 *.pos
 *.csv
-fp_info-cache
+fp-info-cache
 
 # Autosave & backups
 _autosave/
