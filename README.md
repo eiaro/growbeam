@@ -13,7 +13,7 @@
 
 **GrowBeam** is a modular open-source grow light system designed for indoor gardens, hydroponic setups, and controlled environment agriculture. Each module combines high-efficiency white and deep red LEDs to provide a balanced light spectrum optimized for plant growth.
 
-Each GrowBeam module measures 150 × 20 mm and can be combined to create 600 mm light bars — a perfect fit for standard grow tents. For example, using 5 bars in a 90 × 60 cm tent means 20 modules — delivering ~130 W of pure, growth-optimized light.
+**NOTE** A test batch is currently ordered. Details to follow soon(tm).
 
 ---
 
@@ -21,7 +21,7 @@ Each GrowBeam module measures 150 × 20 mm and can be combined to create 6
 
 - Modular and scalable design
 - Uses Samsung LM301H (white) and LUXEON SunPlus 2835 (660 nm red) LEDs
-- Designed for 24 V DC input
+- Designed for 42 V DC input (constant current)
 - Simple current-limiting resistor configuration
 - Passive cooling (no fans required)
 - Easy to manufacture and assemble
@@ -36,12 +36,12 @@ These values are based on typical LED performance from manufacturer datasheets u
 
 | Component                   | Qty | PPF per LED (μmol/s) | Total PPF (μmol/s) |
 |----------------------------|-----|-----------------------|---------------------|
-| Samsung LM301H (white)     | 21  | ~0.56                 | ~11.8               |
-| LUXEON 2835 Deep Red (660 nm) | 9   | ~0.60                 | ~5.4                |
-| **Total**                  | –   | –                     | **~17.2 μmol/s**    |
+| Samsung LM301H (white)     | 60  | ~0.56                 | ~33.5               |
+| LUXEON 2835 Deep Red (660 nm) | 15  | ~0.60                 | ~9                |
+| **Total**                  | –   | –                     | **~42.5 μmol/s**    |
 
-- **Power consumption:** ~6.5 W  
-- **Photosynthetic Photon Efficacy (PPE):** ~2.65 μmol/J
+- **Power consumption:** ~16.4 W  
+- **Photosynthetic Photon Efficacy (PPE):** ~2.60 μmol/J
 
 ---
 
@@ -49,7 +49,7 @@ These values are based on typical LED performance from manufacturer datasheets u
 
 | Light Source               | Power | PPF (μmol/s) | PPE (μmol/J) | Notes                           |
 |---------------------------|--------|--------------|--------------|----------------------------------|
-| **GrowBeam**              | ~6.5 W | ~17.2        | ~2.65        | High-efficiency DIY module ✅     |
+| **GrowBeam**              | ~16 W | ~42        | ~2.6        | High-efficiency DIY module ✅     |
 | HPS 400W                  | 400 W  | ~550         | ~1.4         | High heat, low efficiency ❌      |
 | Generic LED Panel (20W)   | 20 W   | ~15–20       | ~0.75–1.0    | Often misleading specs ❌        |
 | T5 Fluorescent Tube (24W) | 24 W   | ~28          | ~1.2         | Narrow spectrum, low efficacy ❌ |
@@ -64,24 +64,19 @@ GrowBeam matches the efficiency of premium grow lights using open hardware and o
 ## 🛠️ Hardware Overview
 
 Each GrowBeam module contains:
-- 3 LED strings with 7 × Samsung LM301H (white)
-- 1 LED string with 9 × LUXEON SunPlus 2835 Deep Red
-- Current-limiting resistors:
-  - 75 Ω for white LEDs
-  - 51 Ω for red LEDs
+- 5 LED strings with 12 × Samsung LM301H (white)
+- 1 LED string with 15 × LUXEON SunPlus 2835 Deep Red
 
-All strings are powered by a shared 24 V DC source and operate at approx. 60–100 mA per string.
+All strings are powered by a shared 42 V DC constant current source and operate at approx. 65 mA per string.
 
 ## 📋 Bill of Materials (BoM)
 
 You’ll find a complete part list in `hardware/bom.csv`.  
 Key components include:
 
-- 21 × Samsung LM301H white LEDs
-- 9 × LUXEON SunPlus 2835 Deep Red LEDs
-- 3 × 75 Ω resistors (0.5 W, 1206)
-- 1 × 51 Ω resistor (0.5 W, 1206)
-- FR4 PCB (150 × 20 mm, aluminum-backed recommended)
+- 60 × Samsung LM301H white LEDs
+- 15 × LUXEON SunPlus 2835 Deep Red LEDs
+- Al MCPCB (196 × 35 mm, aluminum-backed recommended)
 
 ---
 
