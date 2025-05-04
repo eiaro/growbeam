@@ -36,11 +36,11 @@ These values are based on typical LED performance from manufacturer datasheets u
 
 | Component                   | Qty | PPF per LED (μmol/s) | Total PPF (μmol/s) |
 |----------------------------|-----|-----------------------|---------------------|
-| Samsung LM301H (white)     | 60  | ~0.56                 | ~33.5               |
+| Samsung LM301H (white)     | 72  | ~0.56                 | ~40               |
 | LUXEON 2835 Deep Red (660 nm) | 15  | ~0.60                 | ~9                |
-| **Total**                  | –   | –                     | **~42.5 μmol/s**    |
+| **Total**                  | –   | –                     | **~49 μmol/s**    |
 
-- **Power consumption:** ~16.4 W  
+- **Power consumption:** ~19 W  
 - **Photosynthetic Photon Efficacy (PPE):** ~2.60 μmol/J
 
 ---
@@ -49,7 +49,7 @@ These values are based on typical LED performance from manufacturer datasheets u
 
 | Light Source               | Power | PPF (μmol/s) | PPE (μmol/J) | Notes                           |
 |---------------------------|--------|--------------|--------------|----------------------------------|
-| **GrowBeam**              | ~16 W | ~42        | ~2.6        | High-efficiency DIY module ✅     |
+| **GrowBeam**              | ~19 W | ~49        | ~2.6        | High-efficiency DIY module ✅     |
 | HPS 400W                  | 400 W  | ~550         | ~1.4         | High heat, low efficiency ❌      |
 | Generic LED Panel (20W)   | 20 W   | ~15–20       | ~0.75–1.0    | Often misleading specs ❌        |
 | T5 Fluorescent Tube (24W) | 24 W   | ~28          | ~1.2         | Narrow spectrum, low efficacy ❌ |
@@ -64,7 +64,7 @@ GrowBeam matches the efficiency of premium grow lights using open hardware and o
 ## 🛠️ Hardware Overview
 
 Each GrowBeam module contains:
-- 5 LED strings with 12 × Samsung LM301H (white)
+- 6 LED strings with 12 × Samsung LM301H (white)
 - 1 LED string with 15 × LUXEON SunPlus 2835 Deep Red
 
 All strings are powered by a shared 42 V DC constant current source and operate at approx. 65 mA per string.
@@ -74,7 +74,7 @@ All strings are powered by a shared 42 V DC constant current source and operat
 You’ll find a complete part list in `hardware/bom.csv`.  
 Key components include:
 
-- 60 × Samsung LM301H white LEDs
+- 72 × Samsung LM301H white LEDs
 - 15 × LUXEON SunPlus 2835 Deep Red LEDs
 - Al MCPCB (196 × 35 mm, aluminum-backed recommended)
 
